@@ -15,8 +15,8 @@ def deleteMatches():
     """Remove all the match records from the database."""
     conn = connect()
     c = conn.cursor()
-    #c.execute("DELETE FROM Matches;")
-    c.execute("UPDATE Players SET Wins = 0, Matches = 0;")
+    QUERY = "UPDATE Players SET Wins = 0, Matches = 0;"
+    c.execute(QUERY)
     conn.commit()
     conn.close()
 
@@ -25,7 +25,8 @@ def deletePlayers():
     """Remove all the player records from the database."""
     conn = connect()
     c = conn.cursor()
-    c.execute("DELETE FROM Players;")
+    QUERY = "DELETE FROM Players;"
+    c.execute(QUERY)
     conn.commit()
     conn.close()
 
@@ -34,7 +35,8 @@ def countPlayers():
     """Returns the number of players currently registered."""
     conn = connect()
     c = conn.cursor()
-    c.execute("SELECT COUNT(PlayerID) FROM Players;")
+    QUERY = "SELECT COUNT(PlayerID) FROM Players;"
+    c.execute(QUERY)
     count = c.fetchone()
     conn.close()
     return count[0]
@@ -51,7 +53,8 @@ def registerPlayer(name):
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("INSERT INTO Players (Player_Name) VALUES (%s)", (name,))
+    QUERY = "INSERT INTO Players (Player_Name) VALUES (%s)"
+    c.execute(QUERY, (name,))
     conn.commit()
     conn.close()
 
@@ -71,7 +74,8 @@ def playerStandings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("SELECT * FROM Players ORDER BY Wins DESC;")
+    QUERY = "SELECT * FROM Players ORDER BY Wins DESC;"
+    c.execute(QUERY)
     standings = c.fetchall()
     conn.commit()
     conn.close()
@@ -87,19 +91,34 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("SELECT * FROM Players WHERE PlayerID = %s", (winner,))
+
+    # Retrieve winner's record
+    QUERY = "SELECT * FROM Players WHERE PlayerID = %s"
+    c.execute(QUERY, (winner,))
     player = c.fetchone()
+
+    # Add 1 to both Wins and Matches
     newwins = player[2]
     newwins = newwins + 1
     newmatches = player[3]
     newmatches = newmatches + 1
-    c.execute("UPDATE Players SET Wins = %s, Matches = %s WHERE PlayerID = %s", (newwins, newmatches,winner))
 
-    c.execute("SELECT * FROM Players WHERE PlayerID = %s", (loser,))
+    # Update winner's record
+    QUERY = "UPDATE Players SET Wins = %s, Matches = %s WHERE PlayerID = %s"
+    c.execute(QUERY, (newwins, newmatches, winner))
+
+    # Retrieve loser's record
+    QUERY = "SELECT * FROM Players WHERE PlayerID = %s"
+    c.execute(QUERY, (loser,))
     player = c.fetchone()
+
+    # Add 1 to Matches
     newmatches = player[3]
     newmatches = newmatches + 1
-    c.execute("UPDATE Players SET Matches = %s WHERE PlayerID = %s", (newmatches,loser))
+
+    # Update loser's record
+    QUERY = "UPDATE Players SET Matches = %s WHERE PlayerID = %s"
+    c.execute(QUERY, (newmatches, loser))
     
     conn.commit()
     conn.close()
@@ -121,20 +140,23 @@ def swissPairings():
         name2: the second player's name
     """
     players = countPlayers()
-    standings = playerStandings()
+    standings = playerStandings() # Order Players by Wins
     pairings = []
     i = 0
-    paired = 1
+    paired = 1 # Keeps track of whether a pair tuple is complete
 
     while i < players:
         if paired:
+            # Create first half of pairing tuple
             first = (standings[i][0], standings[i][1])
             i = i + 1
-            paired = 0
+            paired = 0 # Indicate that a pair is incomplete
         else:
+            # Create second half of pairing tuple
             second = (standings[i][0], standings[i][1])
+            # Join the halves and add the pair to the list of pairings
             pair = first + second
             pairings.append(pair)
             i = i + 1
-            paired = 1
+            paired = 1 # Indicate that a pair is complete
     return pairings

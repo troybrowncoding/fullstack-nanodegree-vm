@@ -17,10 +17,3 @@ CREATE TABLE Players
 	Wins int DEFAULT 0,
 	Matches int DEFAULT 0
 );
-
---CREATE TABLE Matches
---(
---	MatchID serial PRIMARY KEY,
---	Winner int,
---	Loser int
---);
