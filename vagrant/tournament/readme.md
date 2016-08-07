@@ -16,9 +16,12 @@ Type "help" for help.
 vagrant=> \i tournament.sql
 psql:tournament.sql:9: NOTICE:  database "tournament" does not exist, skipping
 DROP DATABASE
-CREATE DATABASE
 You are now connected to database "tournament" as user "vagrant".
 CREATE TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
 tournament=> \q
 ```
 Run unit tests.
