@@ -1,0 +1,37 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+	<body>
+	<div class = 'pane'>
+		<div class = 'header'>
+		<h1>{{ item.name }}</h1>
+		</div>
+		</br>
+	<div class = 'description'>
+		{{ item.description }}
+	</div>
+	</br>
+	<div class = 'editdeletepane'>
+		<a href=
+			'{{ url_for('editItem', category_id = item.category_id,
+			item_id = item.id) }}'
+			> Edit</a>
+	</div>
+	</br>
+		<a href=
+			'{{ url_for('deleteItem', category_id = item.category_id,
+			item_id = item.id) }}'
+			> <h4>Delete This Item</h4></a>
+	</br>
+		<a href=
+			'{{ url_for('showCategory', category_id = item.category_id) }}'
+			> <h2>Back to {{category.name}}</h2></a>
+	</br>
+		
+		<a href=
+			'{{ url_for('mainMenu') }}'
+			> <h3>Back to Main Menu</h3></a>
+	</div>
+	</body>
+</html>
