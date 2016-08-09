@@ -15,12 +15,12 @@ vagrant@vagrant-ubuntu-trusty-32:/vagrant/catalog$ python application.py
  * Restarting with reloader
 
 ```
-Open a web browser and access the app at <localhost:5000/>
+Open a web browser and access the app at [localhost:5000/](localhost:5000/)
 
 JSON endpoints are available at:
-* /categories/JSON -- List of all categories
-* /categories/category_id/JSON -- List of all items in a category
-* /categories/category_id/item_id/JSON -- List of an item's attributes
+* localhost:5000/categories/JSON -- List of all categories
+* localhost:5000/categories/category_id/JSON -- List of all items in a category
+* localhost:5000/categories/category_id/item_id/JSON -- List of an item's attributes
 
 ## Troubleshooting
 Contact Troy at troybrowncoding@gmail.com if you have any issues or concerns.
